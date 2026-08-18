@@ -1,0 +1,15 @@
+name: house_price_project
+channels:
+  - conda-forge
+dependencies:
+  - python=3.14
+  - pip
+  - typer
+  - loguru
+  - tqdm
+  - ruff
+  - pytest
+  - pip:
+    - python-dotenv
+    - mkdocs
+    - -e .
