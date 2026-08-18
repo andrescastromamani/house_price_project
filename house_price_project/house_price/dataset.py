@@ -1,28 +1,35 @@
 from pathlib import Path
 
-from loguru import logger
-from tqdm import tqdm
+import pandas as pd
 import typer
+from loguru import logger
 
-from house_price.config import PROCESSED_DATA_DIR, RAW_DATA_DIR
+from house_price.config import RAW_DATA_DIR
 
 app = typer.Typer()
 
 
+class CreditCardDataset:
+    """Loads the credit card transactions dataset from disk."""
+
+    def __init__(self, data_path: Path = RAW_DATA_DIR / "creditcard.csv") -> None:
+        self.data_path = data_path
+        self.frame: pd.DataFrame | None = None
+
+    def load(self) -> pd.DataFrame:
+        """Read the CSV file and keep it in the frame attribute."""
+        logger.info(f"Loading dataset from {self.data_path}")
+        self.frame = pd.read_csv(self.data_path)
+        logger.success(f"Dataset loaded with shape {self.frame.shape}")
+        return self.frame
+
+
 @app.command()
 def main(
-    # ---- REPLACE DEFAULT PATHS AS APPROPRIATE ----
-    input_path: Path = RAW_DATA_DIR / "dataset.csv",
-    output_path: Path = PROCESSED_DATA_DIR / "dataset.csv",
-    # ----------------------------------------------
-):
-    # ---- REPLACE THIS WITH YOUR OWN CODE ----
-    logger.info("Processing dataset...")
-    for i in tqdm(range(10), total=10):
-        if i == 5:
-            logger.info("Something happened for iteration 5.")
-    logger.success("Processing dataset complete.")
-    # -----------------------------------------
+    input_path: Path = RAW_DATA_DIR / "creditcard.csv",
+) -> None:
+    dataset = CreditCardDataset(data_path=input_path)
+    dataset.load()
 
 
 if __name__ == "__main__":
