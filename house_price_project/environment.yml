@@ -9,6 +9,12 @@ dependencies:
   - tqdm
   - ruff
   - pytest
+  - pandas
+  - numpy
+  - seaborn
+  - matplotlib
+  - scikit-learn
+  - tensorflow
   - pip:
     - python-dotenv
     - mkdocs
