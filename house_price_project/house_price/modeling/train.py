@@ -183,6 +183,15 @@ class AutoencoderModel(BaseModel):
         mse_max = mse.max()
         return (mse - mse_min) / (mse_max - mse_min)
 
+    def anomaly_threshold(
+        self,
+        X_normal: np.ndarray,
+        percentile: float = 95.0,
+    ) -> float:
+        """Derive an anomaly threshold from the errors of normal transactions."""
+        errors = self.reconstruction_error(X_normal)
+        return float(np.percentile(errors, percentile))
+
 
 @app.command()
 def main(

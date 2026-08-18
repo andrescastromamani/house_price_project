@@ -31,16 +31,24 @@ class ModelEvaluator:
         self.y_test = y_test
         self.results: list[dict] = []
 
-    def evaluate(self, predictions: dict[str, np.ndarray]) -> pd.DataFrame:
+    def evaluate(
+        self,
+        predictions: dict[str, np.ndarray],
+        thresholds: dict[str, float] | None = None,
+    ) -> pd.DataFrame:
         """Evaluate each prediction and store a summary row per model."""
         self.results = []
         for name, probs in predictions.items():
-            preds = (probs >= THRESHOLD).astype(int)
+            threshold = (thresholds or {}).get(name, THRESHOLD)
+            preds = (probs >= threshold).astype(int)
             self.results.append(
                 {
                     "Modelo": name,
+                    "Threshold": round(threshold, 4),
                     "Accuracy": accuracy_score(self.y_test, preds),
-                    "Precision": precision_score(self.y_test, preds, zero_division=0),
+                    "Precision": precision_score(
+                        self.y_test, preds, zero_division=0
+                    ),
                     "Recall": recall_score(self.y_test, preds, zero_division=0),
                     "F1-Score": f1_score(self.y_test, preds, zero_division=0),
                     "ROC-AUC": roc_auc_score(self.y_test, probs),
@@ -48,6 +56,15 @@ class ModelEvaluator:
                 }
             )
         return pd.DataFrame(self.results)
+
+    def optimal_threshold(self, probs: np.ndarray) -> float:
+        """Find the decision threshold that maximizes F1 on the evaluation set."""
+        precisions, recalls, thresholds = precision_recall_curve(self.y_test, probs)
+        f1_scores = 2 * (precisions * recalls) / (precisions + recalls + 1e-12)
+        best_index = int(np.argmax(f1_scores))
+        if best_index < len(thresholds):
+            return float(thresholds[best_index])
+        return 0.0
 
     def plot_precision_recall(
         self,

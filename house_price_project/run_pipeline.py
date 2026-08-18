@@ -48,9 +48,17 @@ def main() -> None:
         "DL 1: MLP Supervisado": mlp.predict(X_test).ravel(),
         "DL 2: Autoencoder": autoencoder.reconstruction_error(X_test),
     }
-
     evaluator = ModelEvaluator(y_test)
-    summary = evaluator.evaluate(predictions)
+    thresholds = {
+        "DL 1: MLP Supervisado": evaluator.optimal_threshold(
+            predictions["DL 1: MLP Supervisado"]
+        ),
+        "DL 2: Autoencoder": evaluator.optimal_threshold(
+            predictions["DL 2: Autoencoder"]
+        ),
+    }
+
+    summary = evaluator.evaluate(predictions, thresholds=thresholds)
 
     results_path = REPORTS_DIR / "model_results.csv"
     summary.to_csv(results_path, index=False)
