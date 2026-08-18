@@ -59,3 +59,5 @@ Obtener precios de casas
 
 --------
 
+## comdando para  ejecutar  el proyecto 
+python run_pipeline.py
