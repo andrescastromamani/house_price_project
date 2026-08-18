@@ -1,8 +1,8 @@
 from pathlib import Path
 
+from loguru import logger
 import pandas as pd
 import typer
-from loguru import logger
 
 from house_price.config import RAW_DATA_DIR
 

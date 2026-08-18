@@ -1,11 +1,11 @@
 from pathlib import Path
 
+from loguru import logger
 import numpy as np
 import pandas as pd
-import typer
-from loguru import logger
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import RobustScaler
+import typer
 
 from house_price.config import PROCESSED_DATA_DIR
 
@@ -50,9 +50,7 @@ class FeatureEngineer:
         self._time_scaler.fit(self.X_train["Time"].values.reshape(-1, 1))
         self.X_train = self._scale(self.X_train)
         self.X_test = self._scale(self.X_test)
-        logger.info(
-            f"Train {self.X_train.shape} - Test {self.X_test.shape} after scaling"
-        )
+        logger.info(f"Train {self.X_train.shape} - Test {self.X_test.shape} after scaling")
 
     def class_weights(self) -> dict:
         """Compute per-class weights to counter the class imbalance."""
@@ -71,9 +69,7 @@ class FeatureEngineer:
         scaled["scaled_amount"] = self._amount_scaler.transform(
             scaled["Amount"].values.reshape(-1, 1)
         )
-        scaled["scaled_time"] = self._time_scaler.transform(
-            scaled["Time"].values.reshape(-1, 1)
-        )
+        scaled["scaled_time"] = self._time_scaler.transform(scaled["Time"].values.reshape(-1, 1))
         return scaled.drop(["Time", "Amount"], axis=1)
 
 
@@ -90,9 +86,7 @@ def main(
     frame = pd.read_csv(input_path)
     engineer = FeatureEngineer()
     engineer.prepare(frame)
-    pd.concat(
-        [engineer.X_train, engineer.y_train], axis=1
-    ).to_csv(output_path, index=False)
+    pd.concat([engineer.X_train, engineer.y_train], axis=1).to_csv(output_path, index=False)
     logger.success("Features generation complete.")
 
 

@@ -1,14 +1,20 @@
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
 from pathlib import Path
 
-import numpy as np
-import typer
 from loguru import logger
+import numpy as np
 from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
+import typer
 
-from house_price.config import AUTOENCODER_MODEL_PATH, MLP_MODEL_PATH
+from house_price.config import (
+    AUTOENCODER_MODEL_PATH,
+    MLP_MODEL_PATH,
+    PROCESSED_DATA_DIR,
+)
 
 app = typer.Typer()
 
@@ -22,7 +28,7 @@ class BaseModel(ABC):
         self.history: keras.callbacks.History | None = None
 
     @abstractmethod
-    def build(self) -> "BaseModel":
+    def build(self) -> BaseModel:
         """Construct and compile the underlying Keras model."""
 
     @abstractmethod
@@ -63,7 +69,7 @@ class MLPModel(BaseModel):
         self.learning_rate = learning_rate
         self.dropout_rate = dropout_rate
 
-    def build(self) -> "MLPModel":
+    def build(self) -> MLPModel:
         self.model = keras.Sequential(
             [
                 layers.Input(shape=(self.input_dim,)),
@@ -98,9 +104,7 @@ class MLPModel(BaseModel):
         if self.model is None:
             raise RuntimeError("Call build() before training.")
         callbacks = [
-            EarlyStopping(
-                monitor="val_pr_auc", mode="max", patience=5, restore_best_weights=True
-            ),
+            EarlyStopping(monitor="val_pr_auc", mode="max", patience=5, restore_best_weights=True),
             ModelCheckpoint(
                 str(checkpoint_path),
                 monitor="val_pr_auc",
@@ -128,16 +132,14 @@ class AutoencoderModel(BaseModel):
         super().__init__(input_dim)
         self.encoding_dim = encoding_dim
 
-    def build(self) -> "AutoencoderModel":
+    def build(self) -> AutoencoderModel:
         input_layer = layers.Input(shape=(self.input_dim,))
         encoded = layers.Dense(20, activation="tanh")(input_layer)
         encoded = layers.Dense(self.encoding_dim, activation="relu")(encoded)
         decoded = layers.Dense(20, activation="tanh")(encoded)
         decoded = layers.Dense(self.input_dim, activation="linear")(decoded)
 
-        self.model = keras.Model(
-            inputs=input_layer, outputs=decoded, name="Autoencoder_Anomalias"
-        )
+        self.model = keras.Model(inputs=input_layer, outputs=decoded, name="Autoencoder_Anomalias")
         self.model.compile(optimizer="adam", loss="mean_squared_error")
         logger.info("Autoencoder built and compiled.")
         return self
@@ -154,9 +156,7 @@ class AutoencoderModel(BaseModel):
         if self.model is None:
             raise RuntimeError("Call build() before training.")
         callbacks = [
-            EarlyStopping(
-                monitor="val_loss", mode="min", patience=5, restore_best_weights=True
-            ),
+            EarlyStopping(monitor="val_loss", mode="min", patience=5, restore_best_weights=True),
             ModelCheckpoint(
                 str(checkpoint_path),
                 monitor="val_loss",
@@ -186,13 +186,9 @@ class AutoencoderModel(BaseModel):
 
 @app.command()
 def main(
-    features_path: Path = typer.Option(
-        "data/processed/features.csv", help="Processed feature matrix"
-    ),
-    labels_path: Path = typer.Option(
-        "data/processed/labels.csv", help="Target labels"
-    ),
-    model_path: Path = typer.Option(str(MLP_MODEL_PATH), help="Output model path"),
+    features_path: Path = PROCESSED_DATA_DIR / "features.csv",
+    labels_path: Path = PROCESSED_DATA_DIR / "labels.csv",
+    model_path: Path = MLP_MODEL_PATH,
 ) -> None:
     logger.info("Training some model...")
     logger.info(f"Features {features_path} - Labels {labels_path}")

@@ -1,10 +1,10 @@
 from pathlib import Path
 
+from loguru import logger
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 import typer
-from loguru import logger
 
 from house_price.config import FIGURES_DIR, RAW_DATA_DIR
 from house_price.dataset import CreditCardDataset
@@ -42,7 +42,7 @@ class ExploratoryPlots:
 
     def amounts_by_class(self, frame: pd.DataFrame) -> None:
         fraud_frame = frame[frame["Class"] == 1]
-        fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+        _, axes = plt.subplots(1, 2, figsize=(14, 5))
         sns.ecdfplot(
             data=frame[frame["Amount"] < 2200],
             x="Amount",
@@ -57,13 +57,9 @@ class ExploratoryPlots:
 
     def time_distribution(self, frame: pd.DataFrame) -> None:
         fraud_frame = frame[frame["Class"] == 1]
-        fig, axes = plt.subplots(1, 2, figsize=(16, 5))
-        sns.histplot(
-            data=frame, x="Time", bins=24, color="lightblue", ax=axes[0]
-        )
-        sns.histplot(
-            data=fraud_frame, x="Time", bins=24, color="red", ax=axes[1]
-        )
+        _, axes = plt.subplots(1, 2, figsize=(16, 5))
+        sns.histplot(data=frame, x="Time", bins=24, color="lightblue", ax=axes[0])
+        sns.histplot(data=fraud_frame, x="Time", bins=24, color="red", ax=axes[1])
         axes[0].set_title("Distribución de Transacciones en el Tiempo")
         axes[1].set_title("Distribución de Fraudes en el Tiempo")
         plt.suptitle("Distribution of transactions and fraudulent transactions over time")

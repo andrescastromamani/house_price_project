@@ -1,10 +1,9 @@
 from pathlib import Path
 
+from loguru import logger
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import typer
-from loguru import logger
 from sklearn.metrics import (
     accuracy_score,
     average_precision_score,
@@ -15,6 +14,7 @@ from sklearn.metrics import (
     roc_auc_score,
 )
 from tensorflow import keras
+import typer
 
 from house_price.config import AUTOENCODER_MODEL_PATH, MLP_MODEL_PATH, PROCESSED_DATA_DIR
 from house_price.modeling.train import AutoencoderModel, MLPModel
@@ -40,9 +40,7 @@ class ModelEvaluator:
                 {
                     "Modelo": name,
                     "Accuracy": accuracy_score(self.y_test, preds),
-                    "Precision": precision_score(
-                        self.y_test, preds, zero_division=0
-                    ),
+                    "Precision": precision_score(self.y_test, preds, zero_division=0),
                     "Recall": recall_score(self.y_test, preds, zero_division=0),
                     "F1-Score": f1_score(self.y_test, preds, zero_division=0),
                     "ROC-AUC": roc_auc_score(self.y_test, probs),
