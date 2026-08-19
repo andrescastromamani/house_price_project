@@ -67,6 +67,18 @@ data: requirements
 	$(PYTHON_INTERPRETER) house_price/dataset.py
 
 
+## Generate EDA plots
+.PHONY: eda
+eda:
+	$(PYTHON_INTERPRETER) house_price/plots.py
+
+
+## Run the full end-to-end pipeline (train + evaluate)
+.PHONY: pipeline
+pipeline:
+	$(PYTHON_INTERPRETER) run_pipeline.py
+
+
 #################################################################################
 # Self Documenting Commands                                                     #
 #################################################################################

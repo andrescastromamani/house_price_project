@@ -59,3 +59,8 @@ Obtener precios de casas
 
 --------
 
+# Install dependencies
+conda env update --file environment.yml --prune
+
+## Run Project 
+python run_pipeline.py

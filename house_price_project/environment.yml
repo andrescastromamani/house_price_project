@@ -2,7 +2,7 @@ name: house_price_project
 channels:
   - conda-forge
 dependencies:
-  - python=3.14
+  - python=3.10
   - pip
   - typer
   - loguru
@@ -15,6 +15,9 @@ dependencies:
   - matplotlib
   - scikit-learn
   - tensorflow
+  - python-dotenv
+  - mlflow
+  - dvc
   - pip:
     - python-dotenv
     - mkdocs

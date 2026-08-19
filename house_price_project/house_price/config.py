@@ -18,6 +18,9 @@ EXTERNAL_DATA_DIR = DATA_DIR / "external"
 
 MODELS_DIR = PROJ_ROOT / "models"
 
+MLP_MODEL_PATH = MODELS_DIR / "model_mlp.keras"
+AUTOENCODER_MODEL_PATH = MODELS_DIR / "model_autoencoder.keras"
+
 REPORTS_DIR = PROJ_ROOT / "reports"
 FIGURES_DIR = REPORTS_DIR / "figures"
 
