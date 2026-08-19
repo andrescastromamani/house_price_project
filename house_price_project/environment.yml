@@ -9,6 +9,8 @@ dependencies:
   - tqdm
   - ruff
   - pytest
+  - dvc 
+  - mlflow
   - pip:
     - python-dotenv
     - mkdocs
