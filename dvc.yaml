@@ -3,9 +3,9 @@ stages:
     cmd: python credit_card_fraud/run_pipeline.py
     deps:
     - credit_card_fraud/run_pipeline.py
-    - credit_card_fraud/credit_card_fraud/dataset.py
-    - credit_card_fraud/credit_card_fraud/features.py
-    - credit_card_fraud/credit_card_fraud/modeling/train.py
+    - credit_card_fraud/house_price/dataset.py
+    - credit_card_fraud/house_price/features.py
+    - credit_card_fraud/house_price/modeling/train.py
     params:
     - prepare.random_state
     - prepare.split_ratio
