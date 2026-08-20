@@ -1,0 +1,5 @@
+outs:
+- md5: 5dd0dd3f2e858b5de7efefca7bd0cddd
+  size: 54964
+  hash: md5
+  path: model_autoencoder.keras
