@@ -1,24 +1,24 @@
 schema: '2.0'
 stages:
   run_pipeline:
-    cmd: python house_price_project/run_pipeline.py
+    cmd: python credit_card_fraud/run_pipeline.py
     deps:
-    - path: house_price_project/house_price/dataset.py
+    - path: credit_card_fraud/credit_card_fraud/dataset.py
       hash: md5
-      md5: a5dc89956869ceeb0ae941bc57222104
-      size: 964
-    - path: house_price_project/house_price/features.py
+      md5: 751d5c226b6817aa65b637b46ea49884
+      size: 1042
+    - path: credit_card_fraud/credit_card_fraud/features.py
       hash: md5
-      md5: 5388c76c0acfa78e88a004e5a0933cae
-      size: 3463
-    - path: house_price_project/house_price/modeling/train.py
+      md5: 258aa34152e71a27840f7d35c06cf944
+      size: 3469
+    - path: credit_card_fraud/credit_card_fraud/modeling/train.py
       hash: md5
-      md5: b1ad4dedcff7389afa58bda00200d385
-      size: 7124
-    - path: house_price_project/run_pipeline.py
+      md5: 7d91fa98bf988f783fe15d4507148398
+      size: 8177
+    - path: credit_card_fraud/run_pipeline.py
       hash: md5
-      md5: 275e8fdb85e81ecc8b41c7344a8fb62c
-      size: 2452
+      md5: ede4f19f50595c0723c67100344c7afd
+      size: 2482
     params:
       params.yaml:
         prepare.random_state: 42
@@ -27,8 +27,8 @@ stages:
         train.epochs: 20
         train.learning_rate: 0.001
     outs:
-    - path: house_price_project/models
+    - path: credit_card_fraud/models
       hash: md5
-      md5: 879dc6272c95b87447baa203efc94ab4.dir
-      size: 149072
+      md5: 7ec46886057dadf01428e33f561ec48c.dir
+      size: 148174
       nfiles: 2

@@ -6,8 +6,8 @@ import pandas as pd
 import seaborn as sns
 import typer
 
-from house_price.config import FIGURES_DIR, RAW_DATA_DIR
-from house_price.dataset import CreditCardDataset
+from credit_card_fraud.config import FIGURES_DIR, RAW_DATA_DIR
+from credit_card_fraud.dataset import CreditCardDataset
 
 app = typer.Typer()
 

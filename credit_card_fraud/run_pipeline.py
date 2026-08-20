@@ -4,11 +4,11 @@ Usage:
     python run_pipeline.py
 """
 
-from house_price.config import REPORTS_DIR
-from house_price.dataset import CreditCardDataset
-from house_price.features import FeatureEngineer
-from house_price.modeling.predict import ModelEvaluator
-from house_price.modeling.train import AutoencoderModel, MLPModel
+from credit_card_fraud.config import REPORTS_DIR
+from credit_card_fraud.dataset import CreditCardDataset
+from credit_card_fraud.features import FeatureEngineer
+from credit_card_fraud.modeling.predict import ModelEvaluator
+from credit_card_fraud.modeling.train import AutoencoderModel, MLPModel
 
 EPOCHS = 30
 BATCH_SIZE = 2048

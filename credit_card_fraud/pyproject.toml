@@ -3,9 +3,9 @@ requires = ["flit_core >=3.2,<4"]
 build-backend = "flit_core.buildapi"
 
 [project]
-name = "house_price"
+name = "credit_card_fraud"
 version = "0.0.1"
-description = "Obtener precios de casas"
+description = "Credit_card_fraud_detection"
 authors = [
   { name = "Grupo 1" },
 ]
@@ -20,13 +20,13 @@ requires-python = "~=3.10.20"
 
 [tool.ruff]
 line-length = 99
-src = ["house_price"]
-include = ["pyproject.toml", "house_price/**/*.py"]
+src = ["credit_card_fraud"]
+include = ["pyproject.toml", "credit_card_fraud/**/*.py"]
 
 [tool.ruff.lint]
 extend-select = ["I"]  # Add import sorting
 
 [tool.ruff.lint.isort]
-known-first-party = ["house_price"]
+known-first-party = ["credit_card_fraud"]
 force-sort-within-sections = true
 

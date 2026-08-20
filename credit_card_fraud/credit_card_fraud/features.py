@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import RobustScaler
 import typer
 
-from house_price.config import PROCESSED_DATA_DIR
+from credit_card_fraud.config import PROCESSED_DATA_DIR
 
 app = typer.Typer()
 

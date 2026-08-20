@@ -4,13 +4,15 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 
 from loguru import logger
+import mlflow
+import mlflow.tensorflow
 import numpy as np
 from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 import typer
 
-from house_price.config import (
+from credit_card_fraud.config import (
     AUTOENCODER_MODEL_PATH,
     MLP_MODEL_PATH,
     PROCESSED_DATA_DIR,
@@ -103,6 +105,7 @@ class MLPModel(BaseModel):
     ) -> keras.callbacks.History:
         if self.model is None:
             raise RuntimeError("Call build() before training.")
+            
         callbacks = [
             EarlyStopping(monitor="val_pr_auc", mode="max", patience=5, restore_best_weights=True),
             ModelCheckpoint(
@@ -112,16 +115,28 @@ class MLPModel(BaseModel):
                 save_best_only=True,
             ),
         ]
-        self.history = self.model.fit(
-            X_train,
-            y_train,
-            validation_split=validation_split,
-            epochs=epochs,
-            batch_size=batch_size,
-            class_weight=class_weight,
-            callbacks=callbacks,
-            verbose=1,
-        )
+        
+        # Inicio del experimento de MLflow para el modelo supervisado
+        mlflow.set_experiment("fraud_detection")
+        with mlflow.start_run(run_name="MLP_Supervisado_Training"):
+            # Habilitar el registro automático de Keras/TensorFlow en MLflow
+            mlflow.tensorflow.autolog(log_models=True)
+            
+            # Registrar hiperparámetros personalizados
+            mlflow.log_param("learning_rate", self.learning_rate)
+            mlflow.log_param("dropout_rate", self.dropout_rate)
+            
+            self.history = self.model.fit(
+                X_train,
+                y_train,
+                validation_split=validation_split,
+                epochs=epochs,
+                batch_size=batch_size,
+                class_weight=class_weight,
+                callbacks=callbacks,
+                verbose=1,
+            )
+            
         return self.history
 
 
@@ -155,6 +170,7 @@ class AutoencoderModel(BaseModel):
     ) -> keras.callbacks.History:
         if self.model is None:
             raise RuntimeError("Call build() before training.")
+            
         callbacks = [
             EarlyStopping(monitor="val_loss", mode="min", patience=5, restore_best_weights=True),
             ModelCheckpoint(
@@ -164,15 +180,23 @@ class AutoencoderModel(BaseModel):
                 save_best_only=True,
             ),
         ]
-        self.history = self.model.fit(
-            X_train,
-            X_train,
-            epochs=epochs,
-            batch_size=batch_size,
-            validation_split=validation_split,
-            callbacks=callbacks,
-            verbose=1,
-        )
+        
+        # Inicio del experimento de MLflow para el Autoencoder
+        mlflow.set_experiment("fraud_detection")
+        with mlflow.start_run(run_name="Autoencoder_Training"):
+            mlflow.tensorflow.autolog(log_models=True)
+            mlflow.log_param("encoding_dim", self.encoding_dim)
+            
+            self.history = self.model.fit(
+                X_train,
+                X_train,
+                epochs=epochs,
+                batch_size=batch_size,
+                validation_split=validation_split,
+                callbacks=callbacks,
+                verbose=1,
+            )
+            
         return self.history
 
     def reconstruction_error(self, X: np.ndarray) -> np.ndarray:

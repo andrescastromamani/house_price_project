@@ -2,9 +2,11 @@ from pathlib import Path
 
 from loguru import logger
 import pandas as pd
+# pyrefly: ignore [missing-import]
 import typer
 
-from house_price.config import RAW_DATA_DIR
+# pyrefly: ignore [missing-import]
+from credit_card_fraud.config import RAW_DATA_DIR
 
 app = typer.Typer()
 

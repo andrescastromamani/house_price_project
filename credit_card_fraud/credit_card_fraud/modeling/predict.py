@@ -16,8 +16,8 @@ from sklearn.metrics import (
 from tensorflow import keras
 import typer
 
-from house_price.config import AUTOENCODER_MODEL_PATH, MLP_MODEL_PATH, PROCESSED_DATA_DIR
-from house_price.modeling.train import AutoencoderModel, MLPModel
+from credit_card_fraud.config import AUTOENCODER_MODEL_PATH, MLP_MODEL_PATH, PROCESSED_DATA_DIR
+from credit_card_fraud.modeling.train import AutoencoderModel, MLPModel
 
 app = typer.Typer()
 
