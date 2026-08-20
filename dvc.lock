@@ -1,0 +1,34 @@
+schema: '2.0'
+stages:
+  run_pipeline:
+    cmd: python house_price_project/run_pipeline.py
+    deps:
+    - path: house_price_project/house_price/dataset.py
+      hash: md5
+      md5: a5dc89956869ceeb0ae941bc57222104
+      size: 964
+    - path: house_price_project/house_price/features.py
+      hash: md5
+      md5: 5388c76c0acfa78e88a004e5a0933cae
+      size: 3463
+    - path: house_price_project/house_price/modeling/train.py
+      hash: md5
+      md5: b1ad4dedcff7389afa58bda00200d385
+      size: 7124
+    - path: house_price_project/run_pipeline.py
+      hash: md5
+      md5: 275e8fdb85e81ecc8b41c7344a8fb62c
+      size: 2452
+    params:
+      params.yaml:
+        prepare.random_state: 42
+        prepare.split_ratio: 0.2
+        train.batch_size: 32
+        train.epochs: 20
+        train.learning_rate: 0.001
+    outs:
+    - path: house_price_project/models
+      hash: md5
+      md5: 879dc6272c95b87447baa203efc94ab4.dir
+      size: 149072
+      nfiles: 2
