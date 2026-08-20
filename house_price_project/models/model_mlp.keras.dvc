@@ -1,5 +1,0 @@
-outs:
-- md5: ed3cc199852fb3dfa6c1bcb7c4a239ae
-  size: 94108
-  hash: md5
-  path: model_mlp.keras

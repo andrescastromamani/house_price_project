@@ -1,5 +1,10 @@
 # Data
 /data/
+house_price_project/data/
+
+# Excepciones para permitir archivos de control de DVC
+!*.dvc
+!.gitignore
 
 # Mac OS-specific storage files
 .DS_Store
@@ -189,3 +194,4 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+

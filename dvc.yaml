@@ -1,0 +1,16 @@
+stages:
+  run_pipeline:
+    cmd: python house_price_project/run_pipeline.py
+    deps:
+    - house_price_project/run_pipeline.py
+    - house_price_project/house_price/dataset.py
+    - house_price_project/house_price/features.py
+    - house_price_project/house_price/modeling/train.py
+    params:
+    - prepare.random_state
+    - prepare.split_ratio
+    - train.batch_size
+    - train.epochs
+    - train.learning_rate
+    outs:
+    - house_price_project/models
